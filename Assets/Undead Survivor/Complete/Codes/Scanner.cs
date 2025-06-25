@@ -22,12 +22,17 @@ namespace Goldmetal.UndeadSurvivor
             Transform result = null;
             float diff = 100;
 
-            foreach (RaycastHit2D target in targets) {
+            foreach (RaycastHit2D target in targets)
+            {
+                if (target.transform.CompareTag("Player"))
+                    continue;
+
                 Vector3 myPos = transform.position;
                 Vector3 targetPos = target.transform.position;
                 float curDiff = Vector3.Distance(myPos, targetPos);
 
-                if (curDiff < diff) {
+                if (curDiff < diff)
+                {
                     diff = curDiff;
                     result = target.transform;
                 }

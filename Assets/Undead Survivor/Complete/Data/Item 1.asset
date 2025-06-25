@@ -18,7 +18,7 @@ MonoBehaviour:
   itemDesc: "\u4F24\u5BB3{0}%\u589E\u52A0\n\u589E\u52A0\u7A7F\u900F\u529B"
   itemIcon: {fileID: -205726582, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
   baseDamage: 3
-  baseCount: 0
+  baseCount: 1
   damages:
   - 0.35
   - 0.7

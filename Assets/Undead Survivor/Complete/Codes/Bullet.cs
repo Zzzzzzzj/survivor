@@ -20,20 +20,24 @@ namespace Goldmetal.UndeadSurvivor
         {
             this.damage = damage;
             this.per = per;
-
-            if (per >= 0) {
+            //    Debug.Log($"Bullet Init - Damage: {damage}, Per: {per}, Dir: {dir}");
+            if (per >= 0)
+            {
                 rigid.velocity = dir * 15f;
             }
         }
 
         void OnTriggerEnter2D(Collider2D collision)
         {
+
             if (!collision.CompareTag("Enemy") || per == -100)
+            {
                 return;
+            }
 
             per--;
-
-            if (per < 0) {
+            if (per < 0)
+            {
                 rigid.velocity = Vector2.zero;
                 gameObject.SetActive(false);
             }

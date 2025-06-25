@@ -6390,7 +6390,7 @@ GameObject:
   - component: {fileID: 539536293}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6586,7 +6586,7 @@ MonoBehaviour:
   scanRange: 7
   targetLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   nearestTarget: {fileID: 0}
 --- !u!114 &539536293
 MonoBehaviour:
