@@ -37,8 +37,28 @@ namespace Goldmetal.UndeadSurvivor
             if (!GameManager.instance.isLive)
                 return;
 
-            //inputVec.x = Input.GetAxisRaw("Horizontal");
-            //inputVec.y = Input.GetAxisRaw("Vertical");
+            // 支持WASD移动
+            float horizontal = 0f;
+            float vertical = 0f;
+
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+            {
+                vertical = 1f;
+            }
+            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+            {
+                vertical = -1f;
+            }
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            {
+                horizontal = -1f;
+            }
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            {
+                horizontal = 1f;
+            }
+
+            inputVec = new Vector2(horizontal, vertical);
         }
 
         void FixedUpdate()
@@ -58,7 +78,8 @@ namespace Goldmetal.UndeadSurvivor
             anim.SetFloat("Speed", inputVec.magnitude);
 
 
-            if (inputVec.x != 0) {
+            if (inputVec.x != 0)
+            {
                 spriter.flipX = inputVec.x < 0;
             }
         }
@@ -70,8 +91,10 @@ namespace Goldmetal.UndeadSurvivor
 
             GameManager.instance.health -= Time.deltaTime * 10;
 
-            if (GameManager.instance.health < 0) {
-                for (int index = 2; index < transform.childCount; index++) {
+            if (GameManager.instance.health < 0)
+            {
+                for (int index = 2; index < transform.childCount; index++)
+                {
                     transform.GetChild(index).gameObject.SetActive(false);
                 }
 
