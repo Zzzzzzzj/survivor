@@ -1,0 +1,8 @@
+id,name,description,itemType,effectValue,duration,maxStack,spritePath,isConsumable,isPermanent,rarity,effectDescription
+1,生命药水,恢复生命值,0,50,0,10,Sprites/Items/health_potion,true,false,0,恢复50点生命值
+2,速度药水,提升移动速度,1,2.0,30.0,5,Sprites/Items/speed_potion,true,false,1,提升移动速度2倍，持续30秒
+3,力量药水,提升攻击力,2,10,60.0,3,Sprites/Items/strength_potion,true,false,2,提升攻击力10点，持续60秒
+4,护甲,提升防御力,3,20,0,1,Sprites/Items/armor,false,true,3,永久提升防御力20点
+5,经验宝石,获得经验值,4,100,0,20,Sprites/Items/exp_gem,true,false,1,获得100点经验值
+6,金币袋,获得金币,5,50,0,10,Sprites/Items/gold_bag,true,false,0,获得50金币
+7,传送卷轴,瞬间传送,6,0,0,1,Sprites/Items/teleport_scroll,true,false,4,瞬间传送到安全位置

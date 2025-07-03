@@ -1,0 +1,6 @@
+id,name,description,requiredLevel,duration,maxEnemies,enemySpawnRate,enemyTypes,enemySpawnWeights,expReward,goldReward,backgroundPath,musicPath,isBossLevel,bossId
+1,新手村,适合新手的简单关卡,1,300,50,2.0,"0,1","0.7,0.3",100,50,Sprites/Backgrounds/village,Audio/Music/village,false,0
+2,森林深处,充满危险的森林,5,400,80,2.5,"0,1,2","0.5,0.3,0.2",200,100,Sprites/Backgrounds/forest,Audio/Music/forest,false,0
+3,废弃工厂,工业废墟中的战斗,10,500,120,3.0,"1,2,3","0.4,0.3,0.3",300,150,Sprites/Backgrounds/factory,Audio/Music/factory,false,0
+4,地下墓穴,黑暗的地下世界,15,600,150,3.5,"2,3,4","0.3,0.4,0.3",400,200,Sprites/Backgrounds/catacomb,Audio/Music/catacomb,false,0
+5,Boss战,与僵尸王的决战,20,900,200,4.0,"0,1,2,3,4","0.2,0.2,0.2,0.2,0.2",500,250,Sprites/Backgrounds/boss_arena,Audio/Music/boss,true,5
