@@ -1,0 +1,6 @@
+id,name,description,health,speed,attackDamage,attackRange,attackSpeed,expReward,goldReward,spritePath,animatorPath,enemyType,isBoss,spawnWeight
+1,僵尸,普通的僵尸敌人,100,2.0,10,1.5,1.0,10,5,Sprites/Enemies/zombie,Animations/Enemies/zombie,0,false,1.0
+2,快速僵尸,移动速度很快的僵尸,80,4.0,8,1.0,1.5,15,8,Sprites/Enemies/fast_zombie,Animations/Enemies/fast_zombie,1,false,0.7
+3,坦克僵尸,生命值很高的僵尸,200,1.0,15,2.0,0.8,20,12,Sprites/Enemies/tank_zombie,Animations/Enemies/tank_zombie,2,false,0.5
+4,远程僵尸,可以远程攻击的僵尸,120,1.5,12,5.0,0.6,18,10,Sprites/Enemies/ranged_zombie,Animations/Enemies/ranged_zombie,3,false,0.6
+5,僵尸王,强大的Boss敌人,500,1.8,25,3.0,0.5,100,50,Sprites/Enemies/zombie_boss,Animations/Enemies/zombie_boss,4,true,0.1
