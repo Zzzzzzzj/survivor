@@ -164,7 +164,9 @@ namespace SurvivorGame
         {
             try
             {
-                string csvContent = @"id,name,description,health,speed,attackDamage,attackRange,attackSpeed,expReward,goldReward,spritePath,animatorPath,enemyType,isBoss,spawnWeight
+                string csvContent = @"敌人ID,敌人名称,敌人描述,生命值,移动速度,攻击伤害,攻击范围,攻击速度,经验奖励,金币奖励,精灵图片路径,动画控制器路径,敌人类型,是否Boss,生成权重
+id,name,description,health,speed,attackDamage,attackRange,attackSpeed,expReward,goldReward,spritePath,animatorPath,enemyType,isBoss,spawnWeight
+int,string,string,int,float,float,float,float,int,int,string,string,EnemyType,bool,float
 1,僵尸,普通的僵尸敌人,100,2.0,10,1.5,1.0,10,5,Sprites/Enemies/zombie,Animations/Enemies/zombie,0,false,1.0
 2,快速僵尸,移动速度很快的僵尸,80,4.0,8,1.0,1.5,15,8,Sprites/Enemies/fast_zombie,Animations/Enemies/fast_zombie,1,false,0.7
 3,坦克僵尸,生命值很高的僵尸,200,1.0,15,2.0,0.8,20,12,Sprites/Enemies/tank_zombie,Animations/Enemies/tank_zombie,2,false,0.5
@@ -198,7 +200,9 @@ namespace SurvivorGame
         {
             try
             {
-                string csvContent = @"id,name,description,weaponType,damage,attackSpeed,range,projectileCount,projectileSpeed,cooldown,maxLevel,spritePath,projectilePrefab,isUnlocked,unlockLevel
+                string csvContent = @"武器ID,武器名称,武器描述,武器类型,伤害值,攻击速度,攻击范围,投射物数量,投射物速度,冷却时间,最大等级,精灵图片路径,投射物预制体路径,是否已解锁,解锁等级
+id,name,description,weaponType,damage,attackSpeed,range,projectileCount,projectileSpeed,cooldown,maxLevel,spritePath,projectilePrefab,isUnlocked,unlockLevel
+int,string,string,WeaponType,float,float,float,int,float,float,int,string,string,bool,int
 1,小刀,基础近战武器,0,15,2.0,1.5,1,0,0.5,5,Sprites/Weapons/knife,Prefabs/Projectiles/knife,true,1
 2,手枪,基础远程武器,1,20,1.5,8.0,1,10,1.0,5,Sprites/Weapons/pistol,Prefabs/Projectiles/bullet,true,1
 3,魔法杖,基础魔法武器,2,25,1.0,6.0,1,8,1.5,5,Sprites/Weapons/staff,Prefabs/Projectiles/magic,false,5
@@ -230,7 +234,9 @@ namespace SurvivorGame
         {
             try
             {
-                string csvContent = @"id,name,description,itemType,effectValue,duration,maxStack,spritePath,isConsumable,isPermanent,rarity,effectDescription
+                string csvContent = @"道具ID,道具名称,道具描述,道具类型,效果数值,持续时间,最大堆叠数量,精灵图片路径,是否消耗品,是否永久道具,稀有度,效果描述
+id,name,description,itemType,effectValue,duration,maxStack,spritePath,isConsumable,isPermanent,rarity,effectDescription
+int,string,string,ItemType,float,float,int,string,bool,bool,int,string
 1,生命药水,恢复生命值,0,50,0,10,Sprites/Items/health_potion,true,false,0,恢复50点生命值
 2,速度药水,提升移动速度,1,2.0,30.0,5,Sprites/Items/speed_potion,true,false,1,提升移动速度2倍，持续30秒
 3,力量药水,提升攻击力,2,10,60.0,3,Sprites/Items/strength_potion,true,false,2,提升攻击力10点，持续60秒
@@ -264,7 +270,9 @@ namespace SurvivorGame
         {
             try
             {
-                string csvContent = @"id,name,description,requiredLevel,duration,maxEnemies,enemySpawnRate,enemyTypes,enemySpawnWeights,expReward,goldReward,backgroundPath,musicPath,isBossLevel,bossId
+                string csvContent = @"关卡ID,关卡名称,关卡描述,所需等级,关卡时长,最大敌人数,敌人生成速率,敌人类型数组,敌人生成权重,经验奖励,金币奖励,背景图片路径,背景音乐路径,是否Boss关卡,Boss ID
+id,name,description,requiredLevel,duration,maxEnemies,enemySpawnRate,enemyTypes,enemySpawnWeights,expReward,goldReward,backgroundPath,musicPath,isBossLevel,bossId
+int,string,string,int,float,int,float,string,string,int,int,string,string,bool,int
 1,新手村,适合新手的简单关卡,1,300,50,2.0,""0,1"",""0.7,0.3"",100,50,Sprites/Backgrounds/village,Audio/Music/village,false,0
 2,森林深处,充满危险的森林,5,400,80,2.5,""0,1,2"",""0.5,0.3,0.2"",200,100,Sprites/Backgrounds/forest,Audio/Music/forest,false,0
 3,废弃工厂,工业废墟中的战斗,10,500,120,3.0,""1,2,3"",""0.4,0.3,0.3"",300,150,Sprites/Backgrounds/factory,Audio/Music/factory,false,0

@@ -1,4 +1,6 @@
+道具ID,道具名称,道具描述,道具类型,效果数值,持续时间,最大堆叠数量,精灵图片路径,是否消耗品,是否永久道具,稀有度,效果描述
 id,name,description,itemType,effectValue,duration,maxStack,spritePath,isConsumable,isPermanent,rarity,effectDescription
+int,string,string,ItemType,float,float,int,string,bool,bool,int,string
 1,生命药水,恢复生命值,0,50,0,10,Sprites/Items/health_potion,true,false,0,恢复50点生命值
 2,速度药水,提升移动速度,1,2.0,30.0,5,Sprites/Items/speed_potion,true,false,1,提升移动速度2倍，持续30秒
 3,力量药水,提升攻击力,2,10,60.0,3,Sprites/Items/strength_potion,true,false,2,提升攻击力10点，持续60秒

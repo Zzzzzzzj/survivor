@@ -16,13 +16,14 @@ namespace SurvivorGame
         /// </summary>
         /// <param name="csvContent">CSV内容</param>
         /// <param name="hasHeader">是否包含表头</param>
+        /// <param name="skipRows">跳过的行数（用于跳过注释行等）</param>
         /// <returns>JSON字符串</returns>
-        public static string ConvertToJSON(string csvContent, bool hasHeader = true)
+        public static string ConvertToJSON(string csvContent, bool hasHeader = true, int skipRows = 0)
         {
             try
             {
                 string[] lines = csvContent.Split('\n');
-                if (lines.Length < 2)
+                if (lines.Length < 2 + skipRows)
                 {
                     Debug.LogWarning("CSV内容为空或格式不正确");
                     return "[]";
@@ -31,15 +32,15 @@ namespace SurvivorGame
                 List<string> headers = new List<string>();
                 List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
 
-                // 处理表头
+                // 处理表头（跳过指定行数）
                 if (hasHeader)
                 {
-                    string[] headerLine = ParseCSVLine(lines[0]);
+                    string[] headerLine = ParseCSVLine(lines[skipRows]);
                     headers.AddRange(headerLine);
                 }
 
-                // 处理数据行
-                for (int i = hasHeader ? 1 : 0; i < lines.Length; i++)
+                // 处理数据行（跳过表头行）
+                for (int i = skipRows + (hasHeader ? 1 : 0); i < lines.Length; i++)
                 {
                     if (string.IsNullOrEmpty(lines[i].Trim()))
                         continue;
@@ -71,13 +72,14 @@ namespace SurvivorGame
         /// <typeparam name="T">目标类型</typeparam>
         /// <param name="csvContent">CSV内容</param>
         /// <param name="hasHeader">是否包含表头</param>
+        /// <param name="skipRows">跳过的行数（用于跳过注释行等）</param>
         /// <returns>对象列表</returns>
-        public static List<T> ConvertToObjects<T>(string csvContent, bool hasHeader = true) where T : class, new()
+        public static List<T> ConvertToObjects<T>(string csvContent, bool hasHeader = true, int skipRows = 0) where T : class, new()
         {
             try
             {
                 string[] lines = csvContent.Split('\n');
-                if (lines.Length < 2)
+                if (lines.Length < 2 + skipRows)
                 {
                     Debug.LogWarning("CSV内容为空或格式不正确");
                     return new List<T>();
@@ -86,15 +88,15 @@ namespace SurvivorGame
                 List<string> headers = new List<string>();
                 List<T> result = new List<T>();
 
-                // 处理表头
+                // 处理表头（跳过指定行数）
                 if (hasHeader)
                 {
-                    string[] headerLine = ParseCSVLine(lines[0]);
+                    string[] headerLine = ParseCSVLine(lines[skipRows]);
                     headers.AddRange(headerLine);
                 }
 
-                // 处理数据行
-                for (int i = hasHeader ? 1 : 0; i < lines.Length; i++)
+                // 处理数据行（跳过表头行）
+                for (int i = skipRows + (hasHeader ? 1 : 0); i < lines.Length; i++)
                 {
                     if (string.IsNullOrEmpty(lines[i].Trim()))
                         continue;
@@ -125,7 +127,7 @@ namespace SurvivorGame
         /// </summary>
         /// <param name="line">CSV行</param>
         /// <returns>字段数组</returns>
-        private static string[] ParseCSVLine(string line)
+        public static string[] ParseCSVLine(string line)
         {
             List<string> fields = new List<string>();
             StringBuilder currentField = new StringBuilder();

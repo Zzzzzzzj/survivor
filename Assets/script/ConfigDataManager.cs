@@ -79,24 +79,189 @@ namespace SurvivorGame
         {
             try
             {
-                // 加载敌人配置
-                LoadEnemyConfigs();
-
-                // 加载武器配置
-                LoadWeaponConfigs();
-
-                // 加载道具配置
-                LoadItemConfigs();
-
-                // 加载关卡配置
-                LoadLevelConfigs();
-
+                // 自动检测并加载所有CSV文件
+                AutoLoadAllCSVConfigs();
                 Debug.Log("所有配置文件加载完成");
             }
             catch (Exception e)
             {
                 Debug.LogError($"加载配置文件失败: {e.Message}");
             }
+        }
+
+        /// <summary>
+        /// 自动检测并加载所有CSV配置文件
+        /// </summary>
+        public void AutoLoadAllCSVConfigs()
+        {
+            try
+            {
+                // 获取Resources/Configs目录下的所有CSV文件
+                string[] csvFiles = GetCSVFilesInConfigsDirectory();
+
+                Debug.Log($"检测到 {csvFiles.Length} 个CSV配置文件");
+
+                foreach (string csvFile in csvFiles)
+                {
+                    LoadCSVConfig(csvFile);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"自动加载CSV配置失败: {e.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 获取Configs目录下的所有CSV文件
+        /// </summary>
+        /// <returns>CSV文件路径数组</returns>
+        private string[] GetCSVFilesInConfigsDirectory()
+        {
+            List<string> csvFiles = new List<string>();
+
+            // 检查Resources/Configs目录
+            string configsPath = $"{configFolderPath}";
+
+            // 使用Unity的Resources.LoadAll来获取所有CSV文件
+            TextAsset[] textAssets = Resources.LoadAll<TextAsset>(configsPath);
+
+            foreach (TextAsset asset in textAssets)
+            {
+                if (asset.name.EndsWith("Config") && !asset.name.Contains("Sample"))
+                {
+                    csvFiles.Add(asset.name);
+                }
+            }
+
+            return csvFiles.ToArray();
+        }
+
+        /// <summary>
+        /// 加载单个CSV配置文件
+        /// </summary>
+        /// <param name="configName">配置文件名（不含扩展名）</param>
+        private void LoadCSVConfig(string configName)
+        {
+            try
+            {
+                string csvContent = CSVDataConverter.ReadCSVFromResources($"{configFolderPath}/{configName}");
+                if (string.IsNullOrEmpty(csvContent))
+                {
+                    Debug.LogWarning($"无法读取CSV文件: {configName}");
+                    return;
+                }
+
+                // 尝试动态加载配置
+                if (TryLoadConfigDynamically(configName, csvContent))
+                {
+                    return;
+                }
+
+                // 根据配置文件名自动选择对应的类型
+                switch (configName)
+                {
+                    case "EnemyConfig":
+                        var enemies = CSVDataConverter.ConvertToObjects<EnemyConfig>(csvContent, true, 3);
+                        _dataCache["EnemyConfigs"] = enemies;
+                        OnConfigLoaded?.Invoke("EnemyConfigs");
+                        Debug.Log($"敌人配置加载完成，共 {enemies.Count} 条记录");
+                        break;
+
+                    case "WeaponConfig":
+                        var weapons = CSVDataConverter.ConvertToObjects<WeaponConfig>(csvContent, true, 3);
+                        _dataCache["WeaponConfigs"] = weapons;
+                        OnConfigLoaded?.Invoke("WeaponConfigs");
+                        Debug.Log($"武器配置加载完成，共 {weapons.Count} 条记录");
+                        break;
+
+                    case "ItemConfig":
+                        var items = CSVDataConverter.ConvertToObjects<ItemConfig>(csvContent, true, 3);
+                        _dataCache["ItemConfigs"] = items;
+                        OnConfigLoaded?.Invoke("ItemConfigs");
+                        Debug.Log($"道具配置加载完成，共 {items.Count} 条记录");
+                        break;
+
+                    case "LevelConfig":
+                        var levels = CSVDataConverter.ConvertToObjects<LevelConfig>(csvContent, true, 3);
+                        _dataCache["LevelConfigs"] = levels;
+                        OnConfigLoaded?.Invoke("LevelConfigs");
+                        Debug.Log($"关卡配置加载完成，共 {levels.Count} 条记录");
+                        break;
+
+                    default:
+                        Debug.LogWarning($"未知的配置文件类型: {configName}");
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"加载配置文件 {configName} 失败: {e.Message}");
+                OnConfigLoadFailed?.Invoke(configName);
+            }
+        }
+
+        /// <summary>
+        /// 尝试动态加载配置
+        /// </summary>
+        /// <param name="configName">配置文件名</param>
+        /// <param name="csvContent">CSV内容</param>
+        /// <returns>是否成功加载</returns>
+        private bool TryLoadConfigDynamically(string configName, string csvContent)
+        {
+            try
+            {
+                // 生成类名
+                string className = GetClassNameFromConfigName(configName);
+                string fullClassName = $"SurvivorGame.{className}";
+
+                // 尝试通过反射获取类型
+                Type configType = Type.GetType(fullClassName);
+                if (configType == null)
+                {
+                    // 尝试从当前程序集获取
+                    configType = System.Reflection.Assembly.GetExecutingAssembly().GetType(fullClassName);
+                }
+
+                if (configType != null)
+                {
+                    // 使用泛型方法动态转换
+                    var method = typeof(CSVDataConverter).GetMethod("ConvertToObjects");
+                    var genericMethod = method.MakeGenericMethod(configType);
+                    var result = genericMethod.Invoke(null, new object[] { csvContent, true, 3 });
+
+                    if (result != null)
+                    {
+                        string cacheKey = $"{className}s";
+                        _dataCache[cacheKey] = result;
+                        OnConfigLoaded?.Invoke(cacheKey);
+                        Debug.Log($"{className}配置加载完成，共 {((System.Collections.IList)result).Count} 条记录");
+                        return true;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"动态加载配置 {configName} 失败: {e.Message}");
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 从配置文件名生成类名
+        /// </summary>
+        /// <param name="configName">配置文件名</param>
+        /// <returns>类名</returns>
+        private string GetClassNameFromConfigName(string configName)
+        {
+            // 移除"Config"后缀，首字母大写
+            string className = configName.Replace("Config", "");
+            if (className.Length > 0)
+            {
+                className = char.ToUpper(className[0]) + className.Substring(1);
+            }
+            return className + "Config";
         }
 
         /// <summary>
@@ -107,7 +272,7 @@ namespace SurvivorGame
             string csvContent = CSVDataConverter.ReadCSVFromResources($"{configFolderPath}/EnemyConfig");
             if (!string.IsNullOrEmpty(csvContent))
             {
-                var enemies = CSVDataConverter.ConvertToObjects<EnemyConfig>(csvContent);
+                var enemies = CSVDataConverter.ConvertToObjects<EnemyConfig>(csvContent, true, 3);
                 _dataCache["EnemyConfigs"] = enemies;
                 OnConfigLoaded?.Invoke("EnemyConfigs");
                 Debug.Log($"敌人配置加载完成，共 {enemies.Count} 条记录");
@@ -126,7 +291,7 @@ namespace SurvivorGame
             string csvContent = CSVDataConverter.ReadCSVFromResources($"{configFolderPath}/WeaponConfig");
             if (!string.IsNullOrEmpty(csvContent))
             {
-                var weapons = CSVDataConverter.ConvertToObjects<WeaponConfig>(csvContent);
+                var weapons = CSVDataConverter.ConvertToObjects<WeaponConfig>(csvContent, true, 3);
                 _dataCache["WeaponConfigs"] = weapons;
                 OnConfigLoaded?.Invoke("WeaponConfigs");
                 Debug.Log($"武器配置加载完成，共 {weapons.Count} 条记录");
@@ -145,7 +310,7 @@ namespace SurvivorGame
             string csvContent = CSVDataConverter.ReadCSVFromResources($"{configFolderPath}/ItemConfig");
             if (!string.IsNullOrEmpty(csvContent))
             {
-                var items = CSVDataConverter.ConvertToObjects<ItemConfig>(csvContent);
+                var items = CSVDataConverter.ConvertToObjects<ItemConfig>(csvContent, true, 3);
                 _dataCache["ItemConfigs"] = items;
                 OnConfigLoaded?.Invoke("ItemConfigs");
                 Debug.Log($"道具配置加载完成，共 {items.Count} 条记录");
@@ -164,7 +329,7 @@ namespace SurvivorGame
             string csvContent = CSVDataConverter.ReadCSVFromResources($"{configFolderPath}/LevelConfig");
             if (!string.IsNullOrEmpty(csvContent))
             {
-                var levels = CSVDataConverter.ConvertToObjects<LevelConfig>(csvContent);
+                var levels = CSVDataConverter.ConvertToObjects<LevelConfig>(csvContent, true, 3);
                 _dataCache["LevelConfigs"] = levels;
                 OnConfigLoaded?.Invoke("LevelConfigs");
                 Debug.Log($"关卡配置加载完成，共 {levels.Count} 条记录");
@@ -379,6 +544,58 @@ namespace SurvivorGame
             }
 
             return stats;
+        }
+
+        /// <summary>
+        /// 通用获取配置列表方法
+        /// </summary>
+        /// <typeparam name="T">配置类型</typeparam>
+        /// <param name="configName">配置名称</param>
+        /// <returns>配置列表</returns>
+        public List<T> GetConfigList<T>(string configName) where T : class
+        {
+            if (_dataCache.TryGetValue(configName, out object data))
+            {
+                return data as List<T>;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 通用获取单个配置方法
+        /// </summary>
+        /// <typeparam name="T">配置类型</typeparam>
+        /// <param name="configName">配置名称</param>
+        /// <param name="id">配置ID</param>
+        /// <returns>配置对象</returns>
+        public T GetConfig<T>(string configName, int id) where T : class
+        {
+            var configList = GetConfigList<T>(configName);
+            if (configList != null)
+            {
+                // 尝试通过反射获取id字段
+                var idProperty = typeof(T).GetField("id");
+                if (idProperty != null)
+                {
+                    foreach (var config in configList)
+                    {
+                        if (idProperty.GetValue(config).Equals(id))
+                        {
+                            return config;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 获取所有已加载的配置名称
+        /// </summary>
+        /// <returns>配置名称列表</returns>
+        public List<string> GetLoadedConfigNames()
+        {
+            return new List<string>(_dataCache.Keys);
         }
     }
 }

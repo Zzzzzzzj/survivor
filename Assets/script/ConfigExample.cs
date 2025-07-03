@@ -66,12 +66,14 @@ namespace SurvivorGame
         {
             Debug.Log("--- 测试CSV转对象 ---");
 
-            string sampleCSV = @"id,name,health,speed,enemyType,isBoss
+            string sampleCSV = @"敌人ID,敌人名称,生命值,移动速度,敌人类型,是否Boss
+id,name,health,speed,enemyType,isBoss
+int,string,int,float,EnemyType,bool
 1,僵尸,100,2.0,0,false
 2,快速僵尸,80,4.0,1,false
 3,坦克僵尸,200,1.0,2,false";
 
-            var enemies = CSVDataConverter.ConvertToObjects<EnemyConfig>(sampleCSV);
+            var enemies = CSVDataConverter.ConvertToObjects<EnemyConfig>(sampleCSV, true, 3);
             Debug.Log($"成功转换 {enemies.Count} 个敌人对象");
 
             foreach (var enemy in enemies)
@@ -170,6 +172,24 @@ namespace SurvivorGame
             {
                 Debug.Log($"配置 {stat.Key}: {stat.Value} 条记录");
             }
+
+            // 测试通用方法
+            Debug.Log("--- 测试通用配置方法 ---");
+            var loadedConfigs = configManager.GetLoadedConfigNames();
+            Debug.Log($"已加载的配置: {string.Join(", ", loadedConfigs)}");
+
+            // 测试通用获取方法
+            var enemyList = configManager.GetConfigList<EnemyConfig>("EnemyConfigs");
+            if (enemyList != null)
+            {
+                Debug.Log($"通过通用方法获取敌人配置: {enemyList.Count} 条");
+            }
+
+            var enemyById = configManager.GetConfig<EnemyConfig>("EnemyConfigs", 1);
+            if (enemyById != null)
+            {
+                Debug.Log($"通过通用方法获取敌人ID=1: {enemyById.name}");
+            }
         }
 
         /// <summary>
@@ -198,7 +218,9 @@ namespace SurvivorGame
         {
             Debug.Log("--- 创建示例CSV ---");
 
-            string sampleCSV = @"id,name,description,health,speed,attackDamage,attackRange,attackSpeed,expReward,goldReward,spritePath,animatorPath,enemyType,isBoss,spawnWeight
+            string sampleCSV = @"敌人ID,敌人名称,敌人描述,生命值,移动速度,攻击伤害,攻击范围,攻击速度,经验奖励,金币奖励,精灵图片路径,动画控制器路径,敌人类型,是否Boss,生成权重
+id,name,description,health,speed,attackDamage,attackRange,attackSpeed,expReward,goldReward,spritePath,animatorPath,enemyType,isBoss,spawnWeight
+int,string,string,int,float,float,float,float,int,int,string,string,EnemyType,bool,float
 1,僵尸,普通的僵尸敌人,100,2.0,10,1.5,1.0,10,5,Sprites/Enemies/zombie,Animations/Enemies/zombie,0,false,1.0
 2,快速僵尸,移动速度很快的僵尸,80,4.0,8,1.0,1.5,15,8,Sprites/Enemies/fast_zombie,Animations/Enemies/fast_zombie,1,false,0.7
 3,坦克僵尸,生命值很高的僵尸,200,1.0,15,2.0,0.8,20,12,Sprites/Enemies/tank_zombie,Animations/Enemies/tank_zombie,2,false,0.5";
@@ -258,6 +280,23 @@ namespace SurvivorGame
             {
                 Debug.LogWarning("无法从Resources读取CSV文件");
             }
+        }
+
+        /// <summary>
+        /// 测试配置生成器
+        /// </summary>
+        [ContextMenu("测试配置生成器")]
+        public void TestConfigGenerator()
+        {
+            Debug.Log("--- 测试配置生成器 ---");
+
+            // 创建配置生成器实例
+            var generator = ScriptableObject.CreateInstance<ConfigDataGenerator>();
+
+            // 生成所有配置类
+            generator.GenerateAllConfigClasses();
+
+            Debug.Log("配置生成器测试完成");
         }
 
         private void OnDestroy()
