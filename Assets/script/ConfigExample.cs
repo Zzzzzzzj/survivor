@@ -78,7 +78,7 @@ int,string,int,float,EnemyType,bool
 
             foreach (var enemy in enemies)
             {
-                Debug.Log($"敌人: ID={enemy.id}, 名称={enemy.name}, 生命值={enemy.health}, 速度={enemy.speed}, 类型={enemy.enemyType.GetLocalizedName()}");
+                //Debug.Log($"敌人: ID={enemy.id}, 名称={enemy.name}, 生命值={enemy.health}, 速度={enemy.speed}, 类型={enemy.enemyType.GetLocalizedName()}");
             }
         }
 

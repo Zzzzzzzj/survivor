@@ -3,94 +3,94 @@ using UnityEngine;
 
 namespace SurvivorGame
 {
-    /// <summary>
-    /// 敌人配置数据
-    /// </summary>
-    [Serializable]
-    public class EnemyConfig
-    {
-        public int id;                     // 敌人ID
-        public string name;                // 敌人名称
-        public string description;         // 敌人描述
-        public int health;                 // 生命值
-        public float speed;                // 移动速度
-        public float attackDamage;         // 攻击伤害
-        public float attackRange;          // 攻击范围
-        public float attackSpeed;          // 攻击速度
-        public int expReward;              // 经验奖励
-        public int goldReward;             // 金币奖励
-        public string spritePath;          // 精灵图片路径
-        public string animatorPath;        // 动画控制器路径
-        public EnemyType enemyType;        // 敌人类型
-        public bool isBoss;                // 是否为Boss
-        public float spawnWeight;          // 生成权重
-    }
+    // /// <summary>
+    // /// 敌人配置数据
+    // /// </summary>
+    // [Serializable]
+    // public class EnemyConfig
+    // {
+    //     public int id;                     // 敌人ID
+    //     public string name;                // 敌人名称
+    //     public string description;         // 敌人描述
+    //     public int health;                 // 生命值
+    //     public float speed;                // 移动速度
+    //     public float attackDamage;         // 攻击伤害
+    //     public float attackRange;          // 攻击范围
+    //     public float attackSpeed;          // 攻击速度
+    //     public int expReward;              // 经验奖励
+    //     public int goldReward;             // 金币奖励
+    //     public string spritePath;          // 精灵图片路径
+    //     public string animatorPath;        // 动画控制器路径
+    //     public EnemyType enemyType;        // 敌人类型
+    //     public bool isBoss;                // 是否为Boss
+    //     public float spawnWeight;          // 生成权重
+    // }
 
-    /// <summary>
-    /// 武器配置数据
-    /// </summary>
-    [Serializable]
-    public class WeaponConfig
-    {
-        public int id;                     // 武器ID
-        public string name;                // 武器名称
-        public string description;         // 武器描述
-        public WeaponType weaponType;      // 武器类型
-        public float damage;               // 伤害值
-        public float attackSpeed;          // 攻击速度
-        public float range;                // 攻击范围
-        public int projectileCount;        // 投射物数量
-        public float projectileSpeed;      // 投射物速度
-        public float cooldown;             // 冷却时间
-        public int maxLevel;               // 最大等级
-        public string spritePath;          // 精灵图片路径
-        public string projectilePrefab;    // 投射物预制体路径
-        public bool isUnlocked;            // 是否已解锁
-        public int unlockLevel;            // 解锁等级
-    }
+    // /// <summary>
+    // /// 武器配置数据
+    // /// </summary>
+    // [Serializable]
+    // public class WeaponConfig
+    // {
+    //     public int id;                     // 武器ID
+    //     public string name;                // 武器名称
+    //     public string description;         // 武器描述
+    //     public WeaponType weaponType;      // 武器类型
+    //     public float damage;               // 伤害值
+    //     public float attackSpeed;          // 攻击速度
+    //     public float range;                // 攻击范围
+    //     public int projectileCount;        // 投射物数量
+    //     public float projectileSpeed;      // 投射物速度
+    //     public float cooldown;             // 冷却时间
+    //     public int maxLevel;               // 最大等级
+    //     public string spritePath;          // 精灵图片路径
+    //     public string projectilePrefab;    // 投射物预制体路径
+    //     public bool isUnlocked;            // 是否已解锁
+    //     public int unlockLevel;            // 解锁等级
+    // }
 
-    /// <summary>
-    /// 道具配置数据
-    /// </summary>
-    [Serializable]
-    public class ItemConfig
-    {
-        public int id;                     // 道具ID
-        public string name;                // 道具名称
-        public string description;         // 道具描述
-        public ItemType itemType;          // 道具类型
-        public float effectValue;          // 效果数值
-        public float duration;             // 持续时间
-        public int maxStack;               // 最大堆叠数量
-        public string spritePath;          // 精灵图片路径
-        public bool isConsumable;          // 是否消耗品
-        public bool isPermanent;           // 是否永久道具
-        public int rarity;                 // 稀有度
-        public string effectDescription;   // 效果描述
-    }
+    // /// <summary>
+    // /// 道具配置数据
+    // /// </summary>
+    // [Serializable]
+    // public class ItemConfig
+    // {
+    //     public int id;                     // 道具ID
+    //     public string name;                // 道具名称
+    //     public string description;         // 道具描述
+    //     public ItemType itemType;          // 道具类型
+    //     public float effectValue;          // 效果数值
+    //     public float duration;             // 持续时间
+    //     public int maxStack;               // 最大堆叠数量
+    //     public string spritePath;          // 精灵图片路径
+    //     public bool isConsumable;          // 是否消耗品
+    //     public bool isPermanent;           // 是否永久道具
+    //     public int rarity;                 // 稀有度
+    //     public string effectDescription;   // 效果描述
+    // }
 
-    /// <summary>
-    /// 关卡配置数据
-    /// </summary>
-    [Serializable]
-    public class LevelConfig
-    {
-        public int id;                     // 关卡ID
-        public string name;                // 关卡名称
-        public string description;         // 关卡描述
-        public int requiredLevel;          // 所需等级
-        public float duration;             // 关卡时长
-        public int maxEnemies;             // 最大敌人数
-        public float enemySpawnRate;       // 敌人生成速率
-        public int[] enemyTypes;           // 敌人类型数组
-        public float[] enemySpawnWeights;  // 敌人生成权重
-        public int expReward;              // 经验奖励
-        public int goldReward;             // 金币奖励
-        public string backgroundPath;      // 背景图片路径
-        public string musicPath;           // 背景音乐路径
-        public bool isBossLevel;           // 是否为Boss关卡
-        public int bossId;                 // Boss ID
-    }
+    // /// <summary>
+    // /// 关卡配置数据
+    // /// </summary>
+    // [Serializable]
+    // public class LevelConfig
+    // {
+    //     public int id;                     // 关卡ID
+    //     public string name;                // 关卡名称
+    //     public string description;         // 关卡描述
+    //     public int requiredLevel;          // 所需等级
+    //     public float duration;             // 关卡时长
+    //     public int maxEnemies;             // 最大敌人数
+    //     public float enemySpawnRate;       // 敌人生成速率
+    //     public int[] enemyTypes;           // 敌人类型数组
+    //     public float[] enemySpawnWeights;  // 敌人生成权重
+    //     public int expReward;              // 经验奖励
+    //     public int goldReward;             // 金币奖励
+    //     public string backgroundPath;      // 背景图片路径
+    //     public string musicPath;           // 背景音乐路径
+    //     public bool isBossLevel;           // 是否为Boss关卡
+    //     public int bossId;                 // Boss ID
+    // }
 
     /// <summary>
     /// 敌人类型枚举
